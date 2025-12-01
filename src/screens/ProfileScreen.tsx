@@ -1,11 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { MapPin, Calendar, TrendingUp, Settings } from 'lucide-react-native';
+import { BackgroundPattern } from '../components/BackgroundPattern';
 import { colors, typography, layout } from '../theme';
 
 export default function ProfileScreen() {
   return (
     <SafeAreaView style={styles.safe}>
+      <BackgroundPattern variant="subtle" />
       <StatusBar style="light" />
 
       <View style={styles.header}>
@@ -26,21 +29,32 @@ export default function ProfileScreen() {
         <View style={[styles.infoCard, layout.shadows.card]}>
           <Text style={styles.cardTitle}>Informations</Text>
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>📍 Localisation</Text>
+            <View style={styles.infoLabelContainer}>
+              <MapPin size={16} color={colors.textSecondary} strokeWidth={2} />
+              <Text style={styles.infoLabel}>Localisation</Text>
+            </View>
             <Text style={styles.infoValue}>Côte d'Ivoire</Text>
           </View>
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>📅 Membre depuis</Text>
+            <View style={styles.infoLabelContainer}>
+              <Calendar size={16} color={colors.textSecondary} strokeWidth={2} />
+              <Text style={styles.infoLabel}>Membre depuis</Text>
+            </View>
             <Text style={styles.infoValue}>Décembre 2025</Text>
           </View>
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>📊 Total animaux</Text>
+            <View style={styles.infoLabelContainer}>
+              <TrendingUp size={16} color={colors.textSecondary} strokeWidth={2} />
+              <Text style={styles.infoLabel}>Total animaux</Text>
+            </View>
             <Text style={styles.infoValue}>127</Text>
           </View>
         </View>
 
         <View style={[styles.placeholderCard, layout.shadows.card]}>
-          <Text style={styles.placeholderIcon}>🛠️</Text>
+          <View style={styles.placeholderIconContainer}>
+            <Settings size={40} color={colors.primary} strokeWidth={2} />
+          </View>
           <Text style={styles.placeholderTitle}>Profil complet bientôt</Text>
           <Text style={styles.placeholderText}>
             Paramètres, statistiques et historique à venir
@@ -117,6 +131,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.borderSubtle,
   },
+  infoLabelContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: layout.spacing.sm,
+  },
   infoLabel: {
     fontSize: typography.body.fontSize,
     color: colors.textSecondary,
@@ -134,8 +153,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.05)',
   },
-  placeholderIcon: {
-    fontSize: 48,
+  placeholderIconContainer: {
     marginBottom: layout.spacing.base,
   },
   placeholderTitle: {

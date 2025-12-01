@@ -1,16 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { Stethoscope, Bot } from 'lucide-react-native';
+import { BackgroundPattern } from '../components/BackgroundPattern';
 import { colors, typography, layout } from '../theme';
 
 export default function VetScreen() {
   return (
     <SafeAreaView style={styles.safe}>
+      <BackgroundPattern variant="subtle" />
       <StatusBar style="light" />
 
       <View style={styles.header}>
-        <View style={[styles.iconCircle, { backgroundColor: colors.accent }]}>
-          <Text style={styles.headerIcon}>🩺</Text>
+        <View style={[styles.iconCircle, { backgroundColor: `${colors.accent}26` }]}>
+          <Stethoscope size={28} color={colors.accent} strokeWidth={2.5} />
         </View>
         <View>
           <Text style={styles.title}>Vétérinaire IA</Text>
@@ -20,7 +23,9 @@ export default function VetScreen() {
 
       <View style={styles.content}>
         <View style={[styles.placeholderCard, layout.shadows.card]}>
-          <Text style={styles.placeholderIcon}>🤖</Text>
+          <View style={styles.placeholderIconContainer}>
+            <Bot size={48} color={colors.accent} strokeWidth={2} />
+          </View>
           <Text style={styles.placeholderTitle}>Bientôt disponible</Text>
           <Text style={styles.placeholderText}>
             Le vétérinaire IA vous aidera à diagnostiquer et traiter vos animaux
@@ -50,7 +55,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: layout.spacing.base,
-    opacity: 0.95,
   },
   headerIcon: {
     fontSize: 28,
@@ -77,8 +81,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.05)',
   },
-  placeholderIcon: {
-    fontSize: 64,
+  placeholderIconContainer: {
     marginBottom: layout.spacing.lg,
   },
   placeholderTitle: {

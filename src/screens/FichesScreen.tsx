@@ -9,8 +9,10 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { BookOpen, PiggyBank, Egg, Milk } from 'lucide-react-native';
 import { FicheCard } from '../components/FicheCard';
 import { SectionHeader } from '../components/SectionHeader';
+import { BackgroundPattern } from '../components/BackgroundPattern';
 import { useFiches } from '../hooks/useFiches';
 import { colors, typography, layout } from '../theme';
 import type { Species } from '../types';
@@ -39,11 +41,12 @@ export default function FichesScreen() {
 
   return (
     <SafeAreaView style={styles.safe}>
+      <BackgroundPattern variant="subtle" />
       <StatusBar style="light" />
 
       <View style={styles.header}>
-        <View style={[styles.iconCircle, { backgroundColor: colors.accent }]}>
-          <Text style={styles.headerIcon}>📋</Text>
+        <View style={[styles.iconCircle, { backgroundColor: `${colors.accent}26` }]}>
+          <BookOpen size={28} color={colors.accent} strokeWidth={2.5} />
         </View>
         <View>
           <Text style={styles.title}>Fiches techniques</Text>
@@ -142,7 +145,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: layout.spacing.base,
-    opacity: 0.95,
   },
   headerIcon: {
     fontSize: 28,

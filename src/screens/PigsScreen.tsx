@@ -11,8 +11,10 @@ import {
   Modal,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { PiggyBank, Plus } from 'lucide-react-native';
 import { LotCard } from '../components/LotCard';
 import { SectionHeader } from '../components/SectionHeader';
+import { BackgroundPattern } from '../components/BackgroundPattern';
 import { useLots } from '../hooks/useLots';
 import { colors, typography, layout } from '../theme';
 import type { CreateLotInput } from '../types';
@@ -61,11 +63,12 @@ export default function PigsScreen() {
 
   return (
     <SafeAreaView style={styles.safe}>
+      <BackgroundPattern variant="subtle" />
       <StatusBar style="light" />
 
       <View style={styles.header}>
-        <View style={[styles.iconCircle, { backgroundColor: colors.primary }]}>
-          <Text style={styles.headerIcon}>🐷</Text>
+        <View style={[styles.iconCircle, { backgroundColor: `${colors.primary}26` }]}>
+          <PiggyBank size={28} color={colors.primary} strokeWidth={2.5} />
         </View>
         <View>
           <Text style={styles.title}>Porcs</Text>
@@ -202,7 +205,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: layout.spacing.base,
-    opacity: 0.95,
   },
   headerIcon: {
     fontSize: 28,

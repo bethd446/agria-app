@@ -1,20 +1,26 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import type { LucideIcon } from 'lucide-react-native';
 import { colors, typography, layout } from '../theme';
 
 interface StatCardProps {
-  icon: string;
+  icon?: string;
+  IconComponent?: LucideIcon;
   label: string;
   value: string | number;
   hint?: string;
   iconColor?: string;
 }
 
-export function StatCard({ icon, label, value, hint, iconColor = colors.primary }: StatCardProps) {
+export function StatCard({ icon, IconComponent, label, value, hint, iconColor = colors.primary }: StatCardProps) {
   return (
     <View style={[styles.card, layout.shadows.card]}>
-      <View style={[styles.iconCircle, { backgroundColor: iconColor }]}>
-        <Text style={styles.icon}>{icon}</Text>
+      <View style={[styles.iconCircle, { backgroundColor: `${iconColor}26` }]}>
+        {IconComponent ? (
+          <IconComponent size={24} color={iconColor} strokeWidth={2.5} />
+        ) : (
+          <Text style={styles.icon}>{icon}</Text>
+        )}
       </View>
       <Text style={styles.label}>{label}</Text>
       <Text style={styles.value}>{value}</Text>
@@ -40,7 +46,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: layout.spacing.base,
-    opacity: 0.9,
   },
   icon: {
     fontSize: 24,

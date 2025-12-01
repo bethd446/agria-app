@@ -2,10 +2,13 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { TrendingUp, Users, PiggyBank, Egg, Milk } from 'lucide-react-native';
 import { StatCard } from '../components/StatCard';
 import { AlertCard } from '../components/AlertCard';
 import { QuickAccessCard } from '../components/QuickAccessCard';
 import { SectionHeader } from '../components/SectionHeader';
+import { Logo } from '../components/Logo';
+import { BackgroundPattern } from '../components/BackgroundPattern';
 import { useDashboard } from '../hooks/useDashboard';
 import { colors, typography, layout } from '../theme';
 
@@ -39,13 +42,11 @@ export default function DashboardScreen() {
 
   return (
     <SafeAreaView style={styles.safe}>
+      <BackgroundPattern variant="gradient" />
       <StatusBar style="light" />
 
       <View style={styles.header}>
-        <View>
-          <Text style={styles.appTitle}>AGRIA</Text>
-          <Text style={styles.appSubtitle}>Gestion d'Élevage</Text>
-        </View>
+        <Logo size="medium" showText={true} />
       </View>
 
       <View style={styles.heroSection}>
@@ -54,7 +55,9 @@ export default function DashboardScreen() {
           <Text style={styles.heroSubtext}>Vue d'ensemble de ton élevage</Text>
         </View>
         <View style={[styles.heroCard, layout.shadows.cardLarge]}>
-          <Text style={styles.heroIcon}>🐄</Text>
+          <View style={styles.heroIconContainer}>
+            <Users size={32} color={colors.primary} strokeWidth={2.5} />
+          </View>
           <Text style={styles.heroValue}>{totalAnimals}</Text>
           <Text style={styles.heroLabel}>Total cheptel</Text>
         </View>
@@ -69,14 +72,14 @@ export default function DashboardScreen() {
           <SectionHeader title="Tes élevages" />
           <View style={styles.statsGrid}>
             <StatCard
-              icon="🐷"
+              IconComponent={PiggyBank}
               label="Porcs"
               value={data?.porcs.count || 0}
               hint={`Mortalité ${data?.porcs.mortality_rate.toFixed(1) || 0}%`}
               iconColor={colors.primary}
             />
             <StatCard
-              icon="🐔"
+              IconComponent={Egg}
               label="Volailles"
               value={data?.volailles.count || 0}
               hint={`Ponte ${data?.volailles.production_rate.toFixed(0) || 0}%`}
@@ -85,14 +88,14 @@ export default function DashboardScreen() {
           </View>
           <View style={styles.statsGrid}>
             <StatCard
-              icon="🐄"
+              IconComponent={Milk}
               label="Bovins"
               value={data?.bovins.count || 0}
               hint={`Lait ${data?.bovins.daily_production.toFixed(0) || 0} L/j`}
               iconColor={colors.primaryLight}
             />
             <StatCard
-              icon="📈"
+              IconComponent={TrendingUp}
               label="Marge"
               value={`+${data?.margin.toFixed(0) || 0}%`}
               hint="30 derniers jours"
@@ -135,18 +138,21 @@ export default function DashboardScreen() {
           <SectionHeader title="Accès rapide" />
           <View style={styles.quickAccessGrid}>
             <QuickAccessCard
-              icon="🐷"
+              IconComponent={PiggyBank}
               label="Porcs"
+              iconColor={colors.primary}
               onPress={() => navigation.navigate('Pigs' as never)}
             />
             <QuickAccessCard
-              icon="🐔"
+              IconComponent={Egg}
               label="Volailles"
+              iconColor={colors.accent}
               onPress={() => navigation.navigate('Pigs' as never)}
             />
             <QuickAccessCard
-              icon="🐄"
+              IconComponent={Milk}
               label="Bovins"
+              iconColor={colors.primaryLight}
               onPress={() => navigation.navigate('Pigs' as never)}
             />
           </View>
@@ -165,19 +171,8 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: layout.spacing.base,
-    paddingTop: layout.spacing.base,
-    paddingBottom: layout.spacing.sm,
-  },
-  appTitle: {
-    fontSize: typography.sizes.xl,
-    fontWeight: typography.weights.bold,
-    color: colors.primary,
-    letterSpacing: 1,
-  },
-  appSubtitle: {
-    fontSize: typography.sizes.sm,
-    color: colors.textMuted,
-    marginTop: 2,
+    paddingTop: layout.spacing.lg,
+    paddingBottom: layout.spacing.base,
   },
   loadingContainer: {
     flex: 1,
@@ -236,6 +231,15 @@ const styles = StyleSheet.create({
     marginLeft: layout.spacing.base,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.05)',
+  },
+  heroIconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: layout.borderRadius.md,
+    backgroundColor: 'rgba(74, 124, 89, 0.15)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: layout.spacing.sm,
   },
   heroIcon: {
     fontSize: 28,
