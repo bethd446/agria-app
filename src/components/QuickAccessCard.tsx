@@ -24,20 +24,22 @@ export function QuickAccessCard({ icon, label, onPress }: QuickAccessCardProps) 
 const styles = StyleSheet.create({
   card: {
     flex: 1,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.backgroundCard,
     borderRadius: layout.cardRadius,
-    paddingVertical: layout.spacing.lg,
+    paddingVertical: layout.spacing.xl,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 100,
+    minHeight: 110,
+    borderWidth: 1,
+    borderColor: colors.primary,
   },
   icon: {
-    fontSize: 32,
-    marginBottom: layout.spacing.sm,
+    fontSize: 36,
+    marginBottom: layout.spacing.md,
   },
   label: {
-    fontSize: typography.body.fontSize,
+    fontSize: typography.sizes.sm,
     fontWeight: typography.weights.semibold,
-    color: colors.white,
+    color: colors.textPrimary,
   },
 });

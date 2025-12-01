@@ -72,9 +72,11 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.backgroundCard,
     borderRadius: layout.cardRadius,
-    padding: layout.spacing.base,
+    padding: layout.spacing.lg,
     marginBottom: layout.spacing.md,
     position: 'relative',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.05)',
   },
   header: {
     flexDirection: 'row',
@@ -88,12 +90,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   iconCircle: {
-    width: 44,
-    height: 44,
-    borderRadius: layout.borderRadius.full,
+    width: 48,
+    height: 48,
+    borderRadius: layout.borderRadius.md,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: layout.spacing.md,
+    opacity: 0.9,
   },
   emoji: {
     fontSize: 22,
@@ -112,15 +115,17 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
   badge: {
-    backgroundColor: colors.primary,
+    backgroundColor: 'rgba(74, 124, 89, 0.2)',
     paddingHorizontal: layout.spacing.md,
     paddingVertical: layout.spacing.sm,
-    borderRadius: layout.borderRadius.full,
+    borderRadius: layout.borderRadius.sm,
+    borderWidth: 1,
+    borderColor: colors.primary,
   },
   badgeText: {
     fontSize: typography.body.fontSize,
     fontWeight: typography.weights.bold,
-    color: colors.white,
+    color: colors.primary,
   },
   stats: {
     flexDirection: 'row',

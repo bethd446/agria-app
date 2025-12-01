@@ -136,12 +136,13 @@ const styles = StyleSheet.create({
     paddingBottom: layout.spacing.lg,
   },
   iconCircle: {
-    width: 52,
-    height: 52,
-    borderRadius: layout.borderRadius.full,
+    width: 56,
+    height: 56,
+    borderRadius: layout.borderRadius.lg,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: layout.spacing.md,
+    marginRight: layout.spacing.base,
+    opacity: 0.95,
   },
   headerIcon: {
     fontSize: 28,
@@ -168,15 +169,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: layout.spacing.xs,
-    paddingHorizontal: layout.spacing.base,
-    paddingVertical: layout.spacing.sm,
+    paddingHorizontal: layout.spacing.lg,
+    paddingVertical: layout.spacing.md,
     borderRadius: layout.borderRadius.full,
     backgroundColor: colors.backgroundCard,
-    borderWidth: 1,
-    borderColor: colors.borderSubtle,
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   filterChipActive: {
-    backgroundColor: colors.primary,
+    backgroundColor: 'rgba(74, 124, 89, 0.2)',
     borderColor: colors.primary,
   },
   filterEmoji: {
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
   filterChipTextActive: {
-    color: colors.white,
+    color: colors.primary,
   },
   scrollView: {
     flex: 1,
@@ -200,11 +201,13 @@ const styles = StyleSheet.create({
   },
   errorBanner: {
     backgroundColor: colors.backgroundCard,
-    padding: layout.spacing.base,
+    padding: layout.spacing.lg,
     borderRadius: layout.cardRadius,
     marginBottom: layout.spacing.base,
     borderLeftWidth: 4,
     borderLeftColor: colors.status.error,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.05)',
   },
   errorText: {
     color: colors.status.error,

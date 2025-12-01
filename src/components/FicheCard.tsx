@@ -44,8 +44,10 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.backgroundCard,
     borderRadius: layout.cardRadius,
-    padding: layout.spacing.base,
+    padding: layout.spacing.lg,
     marginBottom: layout.spacing.md,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.05)',
   },
   header: {
     flexDirection: 'row',
@@ -53,15 +55,16 @@ const styles = StyleSheet.create({
     marginBottom: layout.spacing.sm,
   },
   iconCircle: {
-    width: 44,
-    height: 44,
-    borderRadius: layout.borderRadius.full,
+    width: 48,
+    height: 48,
+    borderRadius: layout.borderRadius.md,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: layout.spacing.md,
+    opacity: 0.9,
   },
   icon: {
-    fontSize: 22,
+    fontSize: 24,
   },
   content: {
     flex: 1,

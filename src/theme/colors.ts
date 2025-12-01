@@ -1,12 +1,13 @@
 export const colors = {
-  backgroundPrimary: '#020617',
-  backgroundCard: '#0B1120',
+  backgroundPrimary: '#0D1912',
+  backgroundCard: '#12211A',
 
-  primary: '#2D5A2D',
-  primaryLight: '#3D6A3D',
+  primary: '#4A7C59',
+  primaryLight: '#5A8C69',
+  primaryDark: '#3A6C49',
 
-  accent: '#D97706',
-  accentLight: '#F59E0B',
+  accent: '#F97316',
+  accentLight: '#FB923C',
 
   textPrimary: '#F9FAFB',
   textSecondary: '#94A3B8',

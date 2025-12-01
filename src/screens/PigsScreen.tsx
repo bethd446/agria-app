@@ -196,12 +196,13 @@ const styles = StyleSheet.create({
     paddingBottom: layout.spacing.lg,
   },
   iconCircle: {
-    width: 52,
-    height: 52,
-    borderRadius: layout.borderRadius.full,
+    width: 56,
+    height: 56,
+    borderRadius: layout.borderRadius.lg,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: layout.spacing.md,
+    marginRight: layout.spacing.base,
+    opacity: 0.95,
   },
   headerIcon: {
     fontSize: 28,
@@ -224,11 +225,13 @@ const styles = StyleSheet.create({
   },
   errorBanner: {
     backgroundColor: colors.backgroundCard,
-    padding: layout.spacing.base,
+    padding: layout.spacing.lg,
     borderRadius: layout.cardRadius,
     marginBottom: layout.spacing.base,
     borderLeftWidth: 4,
     borderLeftColor: colors.status.error,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.05)',
   },
   errorText: {
     color: colors.status.error,
@@ -237,10 +240,12 @@ const styles = StyleSheet.create({
   },
   addButton: {
     backgroundColor: colors.primary,
-    paddingVertical: layout.spacing.base,
+    paddingVertical: layout.spacing.lg,
     borderRadius: layout.cardRadius,
     alignItems: 'center',
     marginBottom: layout.sectionSpacing,
+    borderWidth: 1,
+    borderColor: colors.primaryLight,
   },
   addButtonText: {
     color: colors.white,

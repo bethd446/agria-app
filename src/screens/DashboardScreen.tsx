@@ -41,6 +41,13 @@ export default function DashboardScreen() {
     <SafeAreaView style={styles.safe}>
       <StatusBar style="light" />
 
+      <View style={styles.header}>
+        <View>
+          <Text style={styles.appTitle}>AGRIA</Text>
+          <Text style={styles.appSubtitle}>Gestion d'Élevage</Text>
+        </View>
+      </View>
+
       <View style={styles.heroSection}>
         <View style={styles.heroLeft}>
           <Text style={styles.greeting}>Bonjour, Kouadio</Text>
@@ -156,6 +163,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.backgroundPrimary,
   },
+  header: {
+    paddingHorizontal: layout.spacing.base,
+    paddingTop: layout.spacing.base,
+    paddingBottom: layout.spacing.sm,
+  },
+  appTitle: {
+    fontSize: typography.sizes.xl,
+    fontWeight: typography.weights.bold,
+    color: colors.primary,
+    letterSpacing: 1,
+  },
+  appSubtitle: {
+    fontSize: typography.sizes.sm,
+    color: colors.textMuted,
+    marginTop: 2,
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -207,10 +230,12 @@ const styles = StyleSheet.create({
   heroCard: {
     backgroundColor: colors.backgroundCard,
     borderRadius: layout.cardRadius,
-    padding: layout.spacing.base,
+    padding: layout.spacing.lg,
     alignItems: 'center',
-    minWidth: 100,
+    minWidth: 110,
     marginLeft: layout.spacing.base,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.05)',
   },
   heroIcon: {
     fontSize: 28,
