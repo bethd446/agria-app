@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StatCard } from '../components/StatCard';
 import { AlertCard } from '../components/AlertCard';
 import { QuickAccessCard } from '../components/QuickAccessCard';
+import { SectionHeader } from '../components/SectionHeader';
 import { useDashboard } from '../hooks/useDashboard';
 import { colors, typography, layout } from '../theme';
 
@@ -34,61 +35,98 @@ export default function DashboardScreen() {
     );
   }
 
+  const totalAnimals = (data?.porcs.count || 0) + (data?.volailles.count || 0) + (data?.bovins.count || 0);
+
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar style="light" />
-      <View style={styles.header}>
-        <Text style={styles.title}>AGRIA Éleveur CI</Text>
-        <Text style={styles.subtitle}>Suivi multi-élevage</Text>
+
+      <View style={styles.heroSection}>
+        <View style={styles.heroLeft}>
+          <Text style={styles.greeting}>Bonjour, Kouadio</Text>
+          <Text style={styles.heroSubtext}>Vue d'ensemble de ton élevage</Text>
+        </View>
+        <View style={[styles.heroCard, layout.shadows.cardLarge]}>
+          <Text style={styles.heroIcon}>🐄</Text>
+          <Text style={styles.heroValue}>{totalAnimals}</Text>
+          <Text style={styles.heroLabel}>Total cheptel</Text>
+        </View>
       </View>
 
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Alertes urgentes</Text>
-          {data?.alerts && data.alerts.length > 0 ? (
-            data.alerts.map((alert) => (
-              <AlertCard
-                key={alert.id}
-                title={alert.message}
-                description={new Date(alert.scheduled_date).toLocaleDateString('fr-FR')}
-              />
-            ))
-          ) : (
-            <Text style={styles.emptyText}>Aucune alerte urgente</Text>
-          )}
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Ton cheptel</Text>
-          <View style={styles.row}>
+          <SectionHeader title="Tes élevages" />
+          <View style={styles.statsGrid}>
             <StatCard
-              label="🐷 Porcs"
+              icon="🐷"
+              label="Porcs"
               value={data?.porcs.count || 0}
               hint={`Mortalité ${data?.porcs.mortality_rate.toFixed(1) || 0}%`}
+              iconColor={colors.primary}
             />
             <StatCard
-              label="🐔 Volailles"
+              icon="🐔"
+              label="Volailles"
               value={data?.volailles.count || 0}
               hint={`Ponte ${data?.volailles.production_rate.toFixed(0) || 0}%`}
+              iconColor={colors.accent}
             />
           </View>
-          <View style={styles.row}>
+          <View style={styles.statsGrid}>
             <StatCard
-              label="🐄 Bovins"
+              icon="🐄"
+              label="Bovins"
               value={data?.bovins.count || 0}
               hint={`Lait ${data?.bovins.daily_production.toFixed(0) || 0} L/j`}
+              iconColor={colors.primaryLight}
             />
             <StatCard
+              icon="📈"
               label="Marge"
               value={`+${data?.margin.toFixed(0) || 0}%`}
-              hint="Derniers 30 jours"
+              hint="30 derniers jours"
+              iconColor={colors.status.success}
             />
           </View>
         </View>
 
+        {data?.alerts && data.alerts.length > 0 && (
+          <View style={styles.section}>
+            <SectionHeader title="Alertes urgentes" />
+            {data.alerts.map((alert) => {
+              const scheduleDate = new Date(alert.scheduled_date);
+              const today = new Date();
+              const isToday = scheduleDate.toDateString() === today.toDateString();
+              const tomorrow = new Date(today);
+              tomorrow.setDate(tomorrow.getDate() + 1);
+              const isTomorrow = scheduleDate.toDateString() === tomorrow.toDateString();
+
+              let badgeLabel = '';
+              if (isToday) badgeLabel = 'Aujourd\'hui';
+              else if (isTomorrow) badgeLabel = 'Demain';
+
+              return (
+                <AlertCard
+                  key={alert.id}
+                  title={alert.message}
+                  text={scheduleDate.toLocaleDateString('fr-FR', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                  badgeLabel={badgeLabel}
+                />
+              );
+            })}
+          </View>
+        )}
+
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Accès rapide</Text>
-          <View style={styles.row}>
+          <SectionHeader title="Accès rapide" />
+          <View style={styles.quickAccessGrid}>
             <QuickAccessCard
               icon="🐷"
               label="Porcs"
@@ -106,6 +144,8 @@ export default function DashboardScreen() {
             />
           </View>
         </View>
+
+        <View style={styles.bottomSpacer} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -114,7 +154,7 @@ export default function DashboardScreen() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.backgroundPrimary,
   },
   loadingContainer: {
     flex: 1,
@@ -122,8 +162,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    color: colors.text.secondary,
-    marginTop: layout.spacing.md,
+    color: colors.textSecondary,
+    marginTop: layout.spacing.base,
+    fontSize: typography.body.fontSize,
   },
   errorContainer: {
     flex: 1,
@@ -133,53 +174,78 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: colors.status.error,
-    fontSize: typography.sizes.lg,
+    fontSize: typography.sizes.md,
     textAlign: 'center',
     marginBottom: layout.spacing.sm,
+    fontWeight: typography.weights.semibold,
   },
   errorHint: {
-    color: colors.text.secondary,
-    fontSize: typography.sizes.sm,
+    color: colors.textSecondary,
+    fontSize: typography.body.fontSize,
     textAlign: 'center',
   },
-  header: {
-    paddingTop: 40,
-    paddingHorizontal: layout.spacing.xl,
+  heroSection: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: layout.spacing.base,
+    paddingTop: layout.spacing.xl,
     paddingBottom: layout.spacing.lg,
-    backgroundColor: colors.background,
   },
-  title: {
-    color: colors.text.primary,
-    fontSize: typography.sizes['3xl'],
+  heroLeft: {
+    flex: 1,
+  },
+  greeting: {
+    ...typography.h1,
+    color: colors.textPrimary,
+    marginBottom: layout.spacing.xs,
+  },
+  heroSubtext: {
+    fontSize: typography.body.fontSize,
+    color: colors.textSecondary,
+  },
+  heroCard: {
+    backgroundColor: colors.backgroundCard,
+    borderRadius: layout.cardRadius,
+    padding: layout.spacing.base,
+    alignItems: 'center',
+    minWidth: 100,
+    marginLeft: layout.spacing.base,
+  },
+  heroIcon: {
+    fontSize: 28,
+    marginBottom: layout.spacing.xs,
+  },
+  heroValue: {
+    fontSize: typography.sizes.xl,
     fontWeight: typography.weights.bold,
+    color: colors.textPrimary,
+    marginBottom: layout.spacing.xs / 2,
   },
-  subtitle: {
-    color: colors.text.secondary,
-    marginTop: layout.spacing.xs,
-    fontSize: typography.sizes.base,
+  heroLabel: {
+    fontSize: typography.sizes.xs,
+    color: colors.textSecondary,
+  },
+  scrollView: {
+    flex: 1,
   },
   content: {
-    padding: layout.spacing.xl,
-    paddingBottom: 40,
+    paddingHorizontal: layout.spacing.base,
+    paddingBottom: layout.spacing['2xl'],
   },
   section: {
-    marginBottom: layout.spacing['2xl'],
+    marginBottom: layout.sectionSpacing,
   },
-  sectionTitle: {
-    color: colors.text.primary,
-    fontSize: typography.sizes.lg,
-    fontWeight: typography.weights.semibold,
-    marginBottom: layout.spacing.md,
-  },
-  row: {
+  statsGrid: {
     flexDirection: 'row',
     gap: layout.spacing.md,
     marginBottom: layout.spacing.md,
   },
-  emptyText: {
-    color: colors.text.tertiary,
-    fontSize: typography.sizes.sm,
-    textAlign: 'center',
-    padding: layout.spacing.lg,
+  quickAccessGrid: {
+    flexDirection: 'row',
+    gap: layout.spacing.md,
+  },
+  bottomSpacer: {
+    height: layout.spacing.xl,
   },
 });

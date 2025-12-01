@@ -21,11 +21,17 @@ export function LotCard({ lot, onPress }: LotCardProps) {
   };
 
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
+    <TouchableOpacity
+      style={[styles.card, layout.shadows.card]}
+      onPress={onPress}
+      activeOpacity={0.8}
+    >
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <Text style={styles.emoji}>{speciesEmoji[lot.species]}</Text>
-          <View>
+          <View style={[styles.iconCircle, { backgroundColor: colors.primary }]}>
+            <Text style={styles.emoji}>{speciesEmoji[lot.species]}</Text>
+          </View>
+          <View style={styles.headerText}>
             <Text style={styles.name}>{lot.name}</Text>
             <Text style={styles.species}>
               {lot.species.charAt(0).toUpperCase() + lot.species.slice(1)}
@@ -48,11 +54,15 @@ export function LotCard({ lot, onPress }: LotCardProps) {
         </View>
         <View style={styles.stat}>
           <Text style={styles.statLabel}>Marge</Text>
-          <Text style={[styles.statValue, styles.marginValue]}>
+          <Text style={[styles.statValue, { color: colors.status.success }]}>
             {lot.margin_percent > 0 ? '+' : ''}
             {lot.margin_percent.toFixed(0)}%
           </Text>
         </View>
+      </View>
+
+      <View style={styles.arrow}>
+        <Text style={styles.arrowText}>›</Text>
       </View>
     </TouchableOpacity>
   );
@@ -60,69 +70,86 @@ export function LotCard({ lot, onPress }: LotCardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: layout.radius.lg,
-    padding: layout.spacing.lg,
-    backgroundColor: colors.cardBackground,
-    borderWidth: layout.borderWidth.thin,
-    borderColor: colors.border.default,
+    backgroundColor: colors.backgroundCard,
+    borderRadius: layout.cardRadius,
+    padding: layout.spacing.base,
     marginBottom: layout.spacing.md,
+    position: 'relative',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: layout.spacing.md,
+    marginBottom: layout.spacing.base,
   },
   headerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: layout.spacing.md,
+    flex: 1,
+  },
+  iconCircle: {
+    width: 44,
+    height: 44,
+    borderRadius: layout.borderRadius.full,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: layout.spacing.md,
   },
   emoji: {
-    fontSize: typography.sizes['3xl'],
+    fontSize: 22,
+  },
+  headerText: {
+    flex: 1,
   },
   name: {
-    color: colors.text.primary,
-    fontSize: typography.sizes.lg,
+    fontSize: typography.body.fontSize,
     fontWeight: typography.weights.semibold,
+    color: colors.textPrimary,
+    marginBottom: layout.spacing.xs / 2,
   },
   species: {
-    color: colors.text.secondary,
     fontSize: typography.sizes.sm,
-    marginTop: layout.spacing.xs / 2,
+    color: colors.textSecondary,
   },
   badge: {
     backgroundColor: colors.primary,
     paddingHorizontal: layout.spacing.md,
     paddingVertical: layout.spacing.sm,
-    borderRadius: layout.radius.md,
+    borderRadius: layout.borderRadius.full,
   },
   badgeText: {
-    color: colors.text.primary,
-    fontSize: typography.sizes.md,
+    fontSize: typography.body.fontSize,
     fontWeight: typography.weights.bold,
+    color: colors.white,
   },
   stats: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     paddingTop: layout.spacing.md,
-    borderTopWidth: layout.borderWidth.thin,
-    borderTopColor: colors.border.default,
+    borderTopWidth: 1,
+    borderTopColor: colors.borderSubtle,
   },
   stat: {
     alignItems: 'center',
   },
   statLabel: {
-    color: colors.text.secondary,
     fontSize: typography.sizes.xs,
+    color: colors.textSecondary,
     marginBottom: layout.spacing.xs / 2,
   },
   statValue: {
-    color: colors.text.primary,
-    fontSize: typography.sizes.md,
+    fontSize: typography.body.fontSize,
     fontWeight: typography.weights.semibold,
+    color: colors.textPrimary,
   },
-  marginValue: {
-    color: colors.status.success,
+  arrow: {
+    position: 'absolute',
+    right: layout.spacing.base,
+    top: '50%',
+    transform: [{ translateY: -12 }],
+  },
+  arrowText: {
+    fontSize: 24,
+    color: colors.textMuted,
   },
 });

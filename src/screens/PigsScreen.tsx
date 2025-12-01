@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { LotCard } from '../components/LotCard';
+import { SectionHeader } from '../components/SectionHeader';
 import { useLots } from '../hooks/useLots';
 import { colors, typography, layout } from '../theme';
 import type { CreateLotInput } from '../types';
@@ -61,12 +62,22 @@ export default function PigsScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar style="light" />
+
       <View style={styles.header}>
-        <Text style={styles.title}>🐷 Porcs</Text>
-        <Text style={styles.subtitle}>Gestion des lots</Text>
+        <View style={[styles.iconCircle, { backgroundColor: colors.primary }]}>
+          <Text style={styles.headerIcon}>🐷</Text>
+        </View>
+        <View>
+          <Text style={styles.title}>Porcs</Text>
+          <Text style={styles.subtitle}>{lots.length} lot(s) actif(s)</Text>
+        </View>
       </View>
 
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
         {error && (
           <View style={styles.errorBanner}>
             <Text style={styles.errorText}>⚠️ {error}</Text>
@@ -74,7 +85,7 @@ export default function PigsScreen() {
         )}
 
         <TouchableOpacity
-          style={styles.addButton}
+          style={[styles.addButton, layout.shadows.button]}
           onPress={() => setModalVisible(true)}
           activeOpacity={0.8}
         >
@@ -88,8 +99,13 @@ export default function PigsScreen() {
             <Text style={styles.emptyHint}>Appuyez sur "Ajouter un lot" pour commencer</Text>
           </View>
         ) : (
-          lots.map((lot) => <LotCard key={lot.id} lot={lot} onPress={() => {}} />)
+          <>
+            <SectionHeader title="Mes lots" />
+            {lots.map((lot) => <LotCard key={lot.id} lot={lot} onPress={() => {}} />)}
+          </>
         )}
+
+        <View style={styles.bottomSpacer} />
       </ScrollView>
 
       <Modal
@@ -99,7 +115,7 @@ export default function PigsScreen() {
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
+          <View style={[styles.modalContent, layout.shadows.cardLarge]}>
             <Text style={styles.modalTitle}>Nouveau lot de porcs</Text>
 
             <View style={styles.inputGroup}>
@@ -107,7 +123,7 @@ export default function PigsScreen() {
               <TextInput
                 style={styles.input}
                 placeholder="Ex: Lot Alpha"
-                placeholderTextColor={colors.text.tertiary}
+                placeholderTextColor={colors.textMuted}
                 value={newLotName}
                 onChangeText={setNewLotName}
               />
@@ -118,7 +134,7 @@ export default function PigsScreen() {
               <TextInput
                 style={styles.input}
                 placeholder="Ex: 50"
-                placeholderTextColor={colors.text.tertiary}
+                placeholderTextColor={colors.textMuted}
                 value={newLotCount}
                 onChangeText={setNewLotCount}
                 keyboardType="number-pad"
@@ -160,7 +176,7 @@ export default function PigsScreen() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.backgroundPrimary,
   },
   loadingContainer: {
     flex: 1,
@@ -168,109 +184,123 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    color: colors.text.secondary,
+    color: colors.textSecondary,
     marginTop: layout.spacing.md,
+    fontSize: typography.body.fontSize,
   },
   header: {
-    paddingTop: 40,
-    paddingHorizontal: layout.spacing.xl,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: layout.spacing.base,
+    paddingTop: layout.spacing.xl,
     paddingBottom: layout.spacing.lg,
-    backgroundColor: colors.background,
+  },
+  iconCircle: {
+    width: 52,
+    height: 52,
+    borderRadius: layout.borderRadius.full,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: layout.spacing.md,
+  },
+  headerIcon: {
+    fontSize: 28,
   },
   title: {
-    color: colors.text.primary,
-    fontSize: typography.sizes['3xl'],
-    fontWeight: typography.weights.bold,
+    ...typography.h1,
+    color: colors.textPrimary,
+    marginBottom: layout.spacing.xs / 2,
   },
   subtitle: {
-    color: colors.text.secondary,
-    marginTop: layout.spacing.xs,
-    fontSize: typography.sizes.base,
+    fontSize: typography.body.fontSize,
+    color: colors.textSecondary,
+  },
+  scrollView: {
+    flex: 1,
   },
   content: {
-    padding: layout.spacing.xl,
-    paddingBottom: 40,
+    paddingHorizontal: layout.spacing.base,
+    paddingBottom: layout.spacing['2xl'],
   },
   errorBanner: {
-    backgroundColor: colors.status.error,
-    padding: layout.spacing.md,
-    borderRadius: layout.radius.md,
-    marginBottom: layout.spacing.lg,
+    backgroundColor: colors.backgroundCard,
+    padding: layout.spacing.base,
+    borderRadius: layout.cardRadius,
+    marginBottom: layout.spacing.base,
+    borderLeftWidth: 4,
+    borderLeftColor: colors.status.error,
   },
   errorText: {
-    color: colors.white,
+    color: colors.status.error,
     fontSize: typography.sizes.sm,
-    textAlign: 'center',
+    fontWeight: typography.weights.medium,
   },
   addButton: {
     backgroundColor: colors.primary,
-    paddingVertical: layout.spacing.lg,
-    borderRadius: layout.radius.lg,
+    paddingVertical: layout.spacing.base,
+    borderRadius: layout.cardRadius,
     alignItems: 'center',
-    marginBottom: layout.spacing.xl,
+    marginBottom: layout.sectionSpacing,
   },
   addButtonText: {
     color: colors.white,
-    fontSize: typography.sizes.md,
+    fontSize: typography.body.fontSize,
     fontWeight: typography.weights.semibold,
   },
   emptyContainer: {
     alignItems: 'center',
-    paddingVertical: layout.spacing['4xl'],
+    paddingVertical: layout.spacing['3xl'],
   },
   emptyIcon: {
-    fontSize: 64,
+    fontSize: 72,
     marginBottom: layout.spacing.lg,
+    opacity: 0.5,
   },
   emptyText: {
-    color: colors.text.primary,
-    fontSize: typography.sizes.lg,
+    color: colors.textPrimary,
+    fontSize: typography.sizes.md,
     fontWeight: typography.weights.semibold,
     marginBottom: layout.spacing.sm,
   },
   emptyHint: {
-    color: colors.text.secondary,
-    fontSize: typography.sizes.sm,
+    color: colors.textSecondary,
+    fontSize: typography.body.fontSize,
     textAlign: 'center',
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.75)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: layout.spacing.xl,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: 'flex-end',
   },
   modalContent: {
-    backgroundColor: colors.cardBackground,
-    borderRadius: layout.radius.lg,
-    padding: layout.spacing['2xl'],
-    width: '100%',
-    maxWidth: 400,
+    backgroundColor: colors.backgroundCard,
+    borderTopLeftRadius: layout.cardRadius,
+    borderTopRightRadius: layout.cardRadius,
+    padding: layout.spacing.xl,
+    paddingBottom: layout.spacing['2xl'],
   },
   modalTitle: {
-    color: colors.text.primary,
-    fontSize: typography.sizes.xl,
-    fontWeight: typography.weights.bold,
+    ...typography.h2,
+    color: colors.textPrimary,
     marginBottom: layout.spacing.xl,
-    textAlign: 'center',
   },
   inputGroup: {
-    marginBottom: layout.spacing.lg,
+    marginBottom: layout.spacing.base,
   },
   inputLabel: {
-    color: colors.text.secondary,
-    fontSize: typography.sizes.sm,
+    fontSize: typography.label.fontSize,
+    fontWeight: typography.label.fontWeight,
+    color: colors.textSecondary,
     marginBottom: layout.spacing.sm,
-    fontWeight: typography.weights.medium,
   },
   input: {
-    backgroundColor: colors.background,
-    borderWidth: layout.borderWidth.thin,
-    borderColor: colors.border.default,
-    borderRadius: layout.radius.md,
-    padding: layout.spacing.md,
-    color: colors.text.primary,
-    fontSize: typography.sizes.md,
+    backgroundColor: colors.backgroundPrimary,
+    borderRadius: layout.borderRadius.md,
+    padding: layout.spacing.base,
+    color: colors.textPrimary,
+    fontSize: typography.body.fontSize,
+    borderWidth: 1,
+    borderColor: colors.borderSubtle,
   },
   modalButtons: {
     flexDirection: 'row',
@@ -279,18 +309,18 @@ const styles = StyleSheet.create({
   },
   modalButton: {
     flex: 1,
-    paddingVertical: layout.spacing.md,
-    borderRadius: layout.radius.md,
+    paddingVertical: layout.spacing.base,
+    borderRadius: layout.borderRadius.md,
     alignItems: 'center',
   },
   cancelButton: {
-    backgroundColor: colors.background,
-    borderWidth: layout.borderWidth.thin,
-    borderColor: colors.border.default,
+    backgroundColor: colors.backgroundPrimary,
+    borderWidth: 1,
+    borderColor: colors.borderSubtle,
   },
   cancelButtonText: {
-    color: colors.text.secondary,
-    fontSize: typography.sizes.md,
+    color: colors.textSecondary,
+    fontSize: typography.body.fontSize,
     fontWeight: typography.weights.semibold,
   },
   createButton: {
@@ -298,7 +328,10 @@ const styles = StyleSheet.create({
   },
   createButtonText: {
     color: colors.white,
-    fontSize: typography.sizes.md,
+    fontSize: typography.body.fontSize,
     fontWeight: typography.weights.semibold,
+  },
+  bottomSpacer: {
+    height: layout.spacing.xl,
   },
 });

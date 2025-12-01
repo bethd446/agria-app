@@ -14,18 +14,18 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.backgroundPrimary,
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
   title: {
-    color: colors.text.primary,
+    color: colors.textPrimary,
     fontSize: 20,
     fontWeight: '700',
     marginBottom: 8,
   },
   subtitle: {
-    color: colors.text.secondary,
+    color: colors.textSecondary,
   },
 });

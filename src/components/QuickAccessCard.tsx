@@ -10,7 +10,11 @@ interface QuickAccessCardProps {
 
 export function QuickAccessCard({ icon, label, onPress }: QuickAccessCardProps) {
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
+    <TouchableOpacity
+      style={[styles.card, layout.shadows.button]}
+      onPress={onPress}
+      activeOpacity={0.8}
+    >
       <Text style={styles.icon}>{icon}</Text>
       <Text style={styles.label}>{label}</Text>
     </TouchableOpacity>
@@ -20,20 +24,20 @@ export function QuickAccessCard({ icon, label, onPress }: QuickAccessCardProps) 
 const styles = StyleSheet.create({
   card: {
     flex: 1,
+    backgroundColor: colors.primary,
+    borderRadius: layout.cardRadius,
+    paddingVertical: layout.spacing.lg,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: layout.radius.lg,
-    padding: layout.spacing.md,
-    backgroundColor: colors.primary,
-    minHeight: 90,
+    minHeight: 100,
   },
   icon: {
-    fontSize: typography.sizes['3xl'],
-    marginBottom: layout.spacing.xs,
+    fontSize: 32,
+    marginBottom: layout.spacing.sm,
   },
   label: {
-    color: colors.text.primary,
-    fontSize: typography.sizes.base,
+    fontSize: typography.body.fontSize,
     fontWeight: typography.weights.semibold,
+    color: colors.white,
   },
 });

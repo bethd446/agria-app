@@ -15,17 +15,17 @@ export function TabNavigator() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: colors.cardBackground,
-          borderTopColor: colors.border.default,
+          backgroundColor: colors.backgroundCard,
+          borderTopColor: colors.borderSubtle,
           borderTopWidth: 1,
           paddingBottom: 8,
           paddingTop: 8,
           height: 60,
         },
         tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.text.secondary,
+        tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: {
-          fontSize: 12,
+          fontSize: 11,
           fontWeight: '600',
         },
       }}

@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { FicheCard } from '../components/FicheCard';
+import { SectionHeader } from '../components/SectionHeader';
 import { useFiches } from '../hooks/useFiches';
 import { colors, typography, layout } from '../theme';
 import type { Species } from '../types';
@@ -18,11 +19,11 @@ export default function FichesScreen() {
   const [selectedSpecies, setSelectedSpecies] = useState<Species | undefined>(undefined);
   const { data: fiches, loading, error } = useFiches(selectedSpecies);
 
-  const filters: Array<{ label: string; value: Species | undefined }> = [
-    { label: 'Toutes', value: undefined },
-    { label: '🐷 Porcs', value: 'porc' },
-    { label: '🐔 Volailles', value: 'volaille' },
-    { label: '🐄 Bovins', value: 'bovin' },
+  const filters: Array<{ label: string; value: Species | undefined; emoji: string }> = [
+    { label: 'Toutes', value: undefined, emoji: '📋' },
+    { label: 'Porcs', value: 'porc', emoji: '🐷' },
+    { label: 'Volailles', value: 'volaille', emoji: '🐔' },
+    { label: 'Bovins', value: 'bovin', emoji: '🐄' },
   ];
 
   if (loading) {
@@ -39,13 +40,23 @@ export default function FichesScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar style="light" />
+
       <View style={styles.header}>
-        <Text style={styles.title}>📋 Fiches techniques</Text>
-        <Text style={styles.subtitle}>Guides pratiques d'élevage</Text>
+        <View style={[styles.iconCircle, { backgroundColor: colors.accent }]}>
+          <Text style={styles.headerIcon}>📋</Text>
+        </View>
+        <View>
+          <Text style={styles.title}>Fiches techniques</Text>
+          <Text style={styles.subtitle}>Guides pratiques d'élevage</Text>
+        </View>
       </View>
 
       <View style={styles.filtersContainer}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filters}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.filters}
+        >
           {filters.map((filter) => (
             <TouchableOpacity
               key={filter.label}
@@ -54,8 +65,9 @@ export default function FichesScreen() {
                 selectedSpecies === filter.value && styles.filterChipActive,
               ]}
               onPress={() => setSelectedSpecies(filter.value)}
-              activeOpacity={0.7}
+              activeOpacity={0.8}
             >
+              <Text style={styles.filterEmoji}>{filter.emoji}</Text>
               <Text
                 style={[
                   styles.filterChipText,
@@ -69,7 +81,11 @@ export default function FichesScreen() {
         </ScrollView>
       </View>
 
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
         {error && (
           <View style={styles.errorBanner}>
             <Text style={styles.errorText}>⚠️ {error}</Text>
@@ -83,10 +99,15 @@ export default function FichesScreen() {
             <Text style={styles.emptyHint}>Essayez un autre filtre</Text>
           </View>
         ) : (
-          fiches.map((fiche) => (
-            <FicheCard key={fiche.id} fiche={fiche} onPress={() => {}} />
-          ))
+          <>
+            <SectionHeader title={`${fiches.length} fiche(s)`} />
+            {fiches.map((fiche) => (
+              <FicheCard key={fiche.id} fiche={fiche} onPress={() => {}} />
+            ))}
+          </>
         )}
+
+        <View style={styles.bottomSpacer} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -95,7 +116,7 @@ export default function FichesScreen() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.backgroundPrimary,
   },
   loadingContainer: {
     flex: 1,
@@ -103,87 +124,114 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    color: colors.text.secondary,
+    color: colors.textSecondary,
     marginTop: layout.spacing.md,
+    fontSize: typography.body.fontSize,
   },
   header: {
-    paddingTop: 40,
-    paddingHorizontal: layout.spacing.xl,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: layout.spacing.base,
+    paddingTop: layout.spacing.xl,
     paddingBottom: layout.spacing.lg,
-    backgroundColor: colors.background,
+  },
+  iconCircle: {
+    width: 52,
+    height: 52,
+    borderRadius: layout.borderRadius.full,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: layout.spacing.md,
+  },
+  headerIcon: {
+    fontSize: 28,
   },
   title: {
-    color: colors.text.primary,
-    fontSize: typography.sizes['3xl'],
-    fontWeight: typography.weights.bold,
+    ...typography.h1,
+    color: colors.textPrimary,
+    marginBottom: layout.spacing.xs / 2,
   },
   subtitle: {
-    color: colors.text.secondary,
-    marginTop: layout.spacing.xs,
-    fontSize: typography.sizes.base,
+    fontSize: typography.body.fontSize,
+    color: colors.textSecondary,
   },
   filtersContainer: {
     paddingVertical: layout.spacing.md,
-    borderBottomWidth: layout.borderWidth.thin,
-    borderBottomColor: colors.border.default,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.borderSubtle,
   },
   filters: {
-    paddingHorizontal: layout.spacing.xl,
+    paddingHorizontal: layout.spacing.base,
     gap: layout.spacing.sm,
   },
   filterChip: {
-    paddingHorizontal: layout.spacing.lg,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: layout.spacing.xs,
+    paddingHorizontal: layout.spacing.base,
     paddingVertical: layout.spacing.sm,
-    borderRadius: layout.radius.xl,
-    backgroundColor: colors.cardBackground,
-    borderWidth: layout.borderWidth.thin,
-    borderColor: colors.border.default,
+    borderRadius: layout.borderRadius.full,
+    backgroundColor: colors.backgroundCard,
+    borderWidth: 1,
+    borderColor: colors.borderSubtle,
   },
   filterChipActive: {
     backgroundColor: colors.primary,
     borderColor: colors.primary,
   },
+  filterEmoji: {
+    fontSize: 16,
+  },
   filterChipText: {
-    color: colors.text.secondary,
-    fontSize: typography.sizes.sm,
-    fontWeight: typography.weights.medium,
+    fontSize: typography.label.fontSize,
+    fontWeight: typography.label.fontWeight,
+    color: colors.textSecondary,
   },
   filterChipTextActive: {
     color: colors.white,
-    fontWeight: typography.weights.semibold,
+  },
+  scrollView: {
+    flex: 1,
   },
   content: {
-    padding: layout.spacing.xl,
-    paddingBottom: 40,
+    paddingHorizontal: layout.spacing.base,
+    paddingTop: layout.spacing.lg,
+    paddingBottom: layout.spacing['2xl'],
   },
   errorBanner: {
-    backgroundColor: colors.status.error,
-    padding: layout.spacing.md,
-    borderRadius: layout.radius.md,
-    marginBottom: layout.spacing.lg,
+    backgroundColor: colors.backgroundCard,
+    padding: layout.spacing.base,
+    borderRadius: layout.cardRadius,
+    marginBottom: layout.spacing.base,
+    borderLeftWidth: 4,
+    borderLeftColor: colors.status.error,
   },
   errorText: {
-    color: colors.white,
+    color: colors.status.error,
     fontSize: typography.sizes.sm,
-    textAlign: 'center',
+    fontWeight: typography.weights.medium,
   },
   emptyContainer: {
     alignItems: 'center',
-    paddingVertical: layout.spacing['4xl'],
+    paddingVertical: layout.spacing['3xl'],
   },
   emptyIcon: {
-    fontSize: 64,
+    fontSize: 72,
     marginBottom: layout.spacing.lg,
+    opacity: 0.5,
   },
   emptyText: {
-    color: colors.text.primary,
-    fontSize: typography.sizes.lg,
+    color: colors.textPrimary,
+    fontSize: typography.sizes.md,
     fontWeight: typography.weights.semibold,
     marginBottom: layout.spacing.sm,
   },
   emptyHint: {
-    color: colors.text.secondary,
-    fontSize: typography.sizes.sm,
+    color: colors.textSecondary,
+    fontSize: typography.body.fontSize,
     textAlign: 'center',
+  },
+  bottomSpacer: {
+    height: layout.spacing.xl,
   },
 });

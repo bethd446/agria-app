@@ -15,35 +15,26 @@ export function FicheCard({ fiche, onPress }: FicheCardProps) {
     bovin: '🐄',
   };
 
-  const renderStars = (rating: number) => {
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 >= 0.5;
-    let stars = '';
-
-    for (let i = 0; i < fullStars; i++) {
-      stars += '⭐';
-    }
-    if (hasHalfStar) {
-      stars += '⭐';
-    }
-
-    return stars;
-  };
-
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
+    <TouchableOpacity
+      style={[styles.card, layout.shadows.card]}
+      onPress={onPress}
+      activeOpacity={0.8}
+    >
       <View style={styles.header}>
-        <Text style={styles.emoji}>{speciesEmoji[fiche.species]}</Text>
-        <View style={styles.headerText}>
+        <View style={[styles.iconCircle, { backgroundColor: colors.primary }]}>
+          <Text style={styles.icon}>{speciesEmoji[fiche.species]}</Text>
+        </View>
+        <View style={styles.content}>
           <Text style={styles.title}>{fiche.title}</Text>
           <Text style={styles.species}>
             {fiche.species.charAt(0).toUpperCase() + fiche.species.slice(1)}
           </Text>
         </View>
       </View>
-      <View style={styles.rating}>
-        <Text style={styles.stars}>{renderStars(fiche.rating)}</Text>
-        <Text style={styles.ratingText}>{fiche.rating.toFixed(1)}/5</Text>
+      <View style={styles.footer}>
+        <Text style={styles.rating}>⭐ {fiche.rating.toFixed(1)}</Text>
+        <Text style={styles.arrow}>›</Text>
       </View>
     </TouchableOpacity>
   );
@@ -51,45 +42,54 @@ export function FicheCard({ fiche, onPress }: FicheCardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: layout.radius.lg,
-    padding: layout.spacing.lg,
-    backgroundColor: colors.cardBackground,
-    borderWidth: layout.borderWidth.thin,
-    borderColor: colors.border.default,
+    backgroundColor: colors.backgroundCard,
+    borderRadius: layout.cardRadius,
+    padding: layout.spacing.base,
     marginBottom: layout.spacing.md,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: layout.spacing.md,
     marginBottom: layout.spacing.sm,
   },
-  emoji: {
-    fontSize: typography.sizes['3xl'],
+  iconCircle: {
+    width: 44,
+    height: 44,
+    borderRadius: layout.borderRadius.full,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: layout.spacing.md,
   },
-  headerText: {
+  icon: {
+    fontSize: 22,
+  },
+  content: {
     flex: 1,
   },
   title: {
-    color: colors.text.primary,
-    fontSize: typography.sizes.md,
+    fontSize: typography.body.fontSize,
     fontWeight: typography.weights.semibold,
+    color: colors.textPrimary,
     marginBottom: layout.spacing.xs / 2,
   },
   species: {
-    color: colors.text.secondary,
     fontSize: typography.sizes.sm,
+    color: colors.textSecondary,
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: layout.spacing.sm,
+    borderTopWidth: 1,
+    borderTopColor: colors.borderSubtle,
   },
   rating: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: layout.spacing.sm,
-  },
-  stars: {
     fontSize: typography.sizes.sm,
+    color: colors.textSecondary,
   },
-  ratingText: {
-    color: colors.text.secondary,
-    fontSize: typography.sizes.sm,
+  arrow: {
+    fontSize: 20,
+    color: colors.textMuted,
   },
 });

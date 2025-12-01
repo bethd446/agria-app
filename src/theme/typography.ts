@@ -1,14 +1,12 @@
 export const typography = {
   sizes: {
-    xs: 12,
-    sm: 13,
-    base: 14,
-    md: 16,
-    lg: 18,
-    xl: 20,
-    '2xl': 22,
-    '3xl': 24,
-    '4xl': 28,
+    xs: 11,
+    sm: 12,
+    base: 16,
+    md: 18,
+    lg: 22,
+    xl: 28,
+    '2xl': 32,
   },
 
   weights: {
@@ -18,9 +16,23 @@ export const typography = {
     bold: '700' as const,
   },
 
-  lineHeights: {
-    tight: 1.2,
-    normal: 1.5,
-    relaxed: 1.75,
+  h1: {
+    fontSize: 28,
+    fontWeight: '700' as const,
+  },
+
+  h2: {
+    fontSize: 22,
+    fontWeight: '600' as const,
+  },
+
+  body: {
+    fontSize: 16,
+    fontWeight: '400' as const,
+  },
+
+  label: {
+    fontSize: 13,
+    fontWeight: '500' as const,
   },
 };
