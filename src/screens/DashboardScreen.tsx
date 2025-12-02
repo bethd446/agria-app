@@ -141,19 +141,19 @@ export default function DashboardScreen() {
               IconComponent={PiggyBank}
               label="Porcs"
               iconColor={colors.primary}
-              onPress={() => navigation.navigate('Pigs' as never)}
+              onPress={() => navigation.navigate('Animals' as never, { screen: 'Pigs' } as never)}
             />
             <QuickAccessCard
               IconComponent={Egg}
               label="Volailles"
               iconColor={colors.accent}
-              onPress={() => navigation.navigate('Pigs' as never)}
+              onPress={() => navigation.navigate('Animals' as never, { screen: 'Poultry' } as never)}
             />
             <QuickAccessCard
               IconComponent={Milk}
               label="Bovins"
               iconColor={colors.primaryLight}
-              onPress={() => navigation.navigate('Pigs' as never)}
+              onPress={() => navigation.navigate('Animals' as never, { screen: 'Cattle' } as never)}
             />
           </View>
         </View>

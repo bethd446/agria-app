@@ -1,11 +1,22 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { MapPin, Calendar, TrendingUp, Settings } from 'lucide-react-native';
+import { MapPin, Calendar, TrendingUp, Settings, LogOut } from 'lucide-react-native';
 import { BackgroundPattern } from '../components/BackgroundPattern';
+import { useAuth } from '../contexts/AuthContext';
 import { colors, typography, layout } from '../theme';
 
 export default function ProfileScreen() {
+  const { user, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safe}>
       <BackgroundPattern variant="subtle" />
@@ -13,10 +24,10 @@ export default function ProfileScreen() {
 
       <View style={styles.header}>
         <View style={[styles.avatarCircle, { backgroundColor: colors.primary }]}>
-          <Text style={styles.avatarText}>K</Text>
+          <Text style={styles.avatarText}>{user?.name?.charAt(0).toUpperCase() || 'A'}</Text>
         </View>
         <View style={styles.headerText}>
-          <Text style={styles.name}>Kouadio</Text>
+          <Text style={styles.name}>{user?.name || 'Utilisateur'}</Text>
           <Text style={styles.subtitle}>Éleveur</Text>
         </View>
       </View>
@@ -31,35 +42,36 @@ export default function ProfileScreen() {
           <View style={styles.infoRow}>
             <View style={styles.infoLabelContainer}>
               <MapPin size={16} color={colors.textSecondary} strokeWidth={2} />
-              <Text style={styles.infoLabel}>Localisation</Text>
+              <Text style={styles.infoLabel}>Téléphone</Text>
             </View>
-            <Text style={styles.infoValue}>Côte d'Ivoire</Text>
+            <Text style={styles.infoValue}>{user?.phone || '-'}</Text>
+          </View>
+          <View style={styles.infoRow}>
+            <View style={styles.infoLabelContainer}>
+              <MapPin size={16} color={colors.textSecondary} strokeWidth={2} />
+              <Text style={styles.infoLabel}>Région</Text>
+            </View>
+            <Text style={styles.infoValue}>{user?.region || 'Non renseignée'}</Text>
           </View>
           <View style={styles.infoRow}>
             <View style={styles.infoLabelContainer}>
               <Calendar size={16} color={colors.textSecondary} strokeWidth={2} />
               <Text style={styles.infoLabel}>Membre depuis</Text>
             </View>
-            <Text style={styles.infoValue}>Décembre 2025</Text>
-          </View>
-          <View style={styles.infoRow}>
-            <View style={styles.infoLabelContainer}>
-              <TrendingUp size={16} color={colors.textSecondary} strokeWidth={2} />
-              <Text style={styles.infoLabel}>Total animaux</Text>
-            </View>
-            <Text style={styles.infoValue}>127</Text>
+            <Text style={styles.infoValue}>
+              {user?.created_at ? new Date(user.created_at).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }) : '-'}
+            </Text>
           </View>
         </View>
 
-        <View style={[styles.placeholderCard, layout.shadows.card]}>
-          <View style={styles.placeholderIconContainer}>
-            <Settings size={40} color={colors.primary} strokeWidth={2} />
-          </View>
-          <Text style={styles.placeholderTitle}>Profil complet bientôt</Text>
-          <Text style={styles.placeholderText}>
-            Paramètres, statistiques et historique à venir
-          </Text>
-        </View>
+        <TouchableOpacity
+          style={[styles.signOutButton, layout.shadows.button]}
+          onPress={handleSignOut}
+          activeOpacity={0.8}
+        >
+          <LogOut size={20} color={colors.white} strokeWidth={2} />
+          <Text style={styles.signOutButtonText}>Se déconnecter</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -145,27 +157,19 @@ const styles = StyleSheet.create({
     fontWeight: typography.weights.semibold,
     color: colors.textPrimary,
   },
-  placeholderCard: {
-    backgroundColor: colors.backgroundCard,
-    borderRadius: layout.cardRadius,
-    padding: layout.spacing['2xl'],
+  signOutButton: {
+    flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.05)',
+    justifyContent: 'center',
+    gap: layout.spacing.sm,
+    backgroundColor: colors.status.error,
+    paddingVertical: layout.spacing.lg,
+    borderRadius: layout.borderRadius.md,
+    marginTop: layout.spacing.base,
   },
-  placeholderIconContainer: {
-    marginBottom: layout.spacing.base,
-  },
-  placeholderTitle: {
-    fontSize: typography.sizes.md,
+  signOutButtonText: {
+    color: colors.white,
+    fontSize: typography.body.fontSize,
     fontWeight: typography.weights.semibold,
-    color: colors.textPrimary,
-    marginBottom: layout.spacing.sm,
-  },
-  placeholderText: {
-    fontSize: typography.sizes.sm,
-    color: colors.textSecondary,
-    textAlign: 'center',
-    lineHeight: 20,
   },
 });
